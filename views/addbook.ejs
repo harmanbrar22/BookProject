@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <title>Book-Project</title>
+</head>
+<body>
+  <div class="container" id="container">
+    <div class="header">My Books-Project</div>
+    <form action="/updateReview">
+      <input type="hidden" name="coverid" value="<%= locals.coverid %>">
+      <input type="hidden" name="title" value="<%= locals.title %>">
+      <input type="hidden" name="bookid" value="<%= locals.bookid %>">
+      <input type="hidden" name="author" value="<%= locals.author %>">
+      <div class="books">
+
+        <% if (locals.coverid == 0){ %>
+          <div class="cover" name=""> cover not available </div>
+          <% } else { %>
+              <img class="cover" name="" src="//covers.openlibrary.org/b/id/<%= locals.coverid %>-M.jpg" alt="Book cover">
+          <% } %>
+
+      <p class="heading-title" name=""> <%= locals.title %> </p>
+      <p class="heading heading-date" name=""> <%= locals.author %> </p> 
+
+      <p class="heading heading-rating rating">Rating: 
+        <input type="text" name="rating" id="rating" autocomplete="off" placeholder="Enter rating between 1 to 5">
+      </p>
+
+      <p class="heading heading-review-title">Review:</p>
+      <p class="heading heading-review review">
+        <% if (locals.review) { %>
+            <h3>Edit Review:</h3>
+            <textarea name="review" id="review" cols="30" rows="10" required><%= locals.review %></textarea>
+        <% } else { %>
+            <h3>Write review:</h3>
+            <textarea name="review" id="review" cols="30" rows="10" required></textarea>
+        <% } %> 
+      </p>
+
+      <div class="button edit-delete">
+        <% if(locals.review) {%>
+            <input onclick="validateForm()" class="buttonedit" type="submit" value="Update" formmethod="post" formaction="/updateReview">
+        <% } else { %>
+            <input onclick="validateForm()" class="buttondelete" type="submit" value="Add review" formmethod="post" formaction="/addBook">
+        <% } %>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+<script>
+    function validateForm() {
+        const ratingInputs = document.getElementById('rating');
+        if (ratingInputs>5 || ratingInputs<1) {
+            document.getElementById('error-message').innerText = 'Please select a rating between 1 to 5';
+        }
+    }
+</script>    
+<script src="index.js"></script>
+</html>

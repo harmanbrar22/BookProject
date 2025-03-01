@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <title>Book-Project</title>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div class="container" id="container">
+    <div class="header">My Books-Project</div>
+    <div class="header-form">
+        <form class="search" action="/search" method="get">
+          <input type="text" name="searchInput" id="searchInput" class="searchInput" autocomplete="off" placeholder="Enter book name, author or isbn">
+          <div class="dropdown">
+            <ul id="dropdownList"></ul>
+          </div>
+        </form>
+  
+        <form class="sort" action="/sort" method="post">
+          <span>Sort By</span>
+          <select name="sort" id="sort-options">
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="rating">Rating</option>
+          </select>
+          <input class="sort-input" type="submit" value="Go">
+        </form>
+     </div>
+    
+    <% locals.data.forEach(book=> { %>
+    
+      <div class="books">
+
+        <% if (book.coverid == 0){ %>
+          <div class="cover"> <%= book.title %> </div>
+          <% } else { %>
+              <img class="cover" src="//covers.openlibrary.org/b/id/<%= book.coverid %>-M.jpg" alt="Book cover">
+          <% } %>
+
+      <p class="heading-title"><%= book.title %></p>
+      <p class="heading heading-info"><%= book.author %>, Rating: <%= book.rating %></p>  
+      <p class="heading heading-review-title">Review:</p>
+      <p class="heading heading-review"><%= book.review %></p>
+
+      <div class="button edit-delete">
+    
+        <a href="/book?title=<%=book.title%>&author=<%= book.author %>&coverId=<%= book.coverid %>">
+        <button id="edit" class="edit">Edit</button></a>
+        
+        <form action="/delete" method="post">
+        <button id="delete" class="delete" onclick="deleteconfirmation()" name="deletebutton" value="<%= book.bookid %>" type="submit">Delete</button></form>
+    
+      </div>
+      
+    </div>
+    <% }); %>
+  </div>
+
+</body>
+
+<script src="/index.js"></script>
+</html>
